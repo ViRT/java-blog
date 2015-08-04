@@ -33,6 +33,6 @@ public class PostsImpl implements Posts {
     }
 
     public void remove(Post post) {
-        entityManager.remove(post);
+        entityManager.remove(entityManager.getReference(Post.class, post.getId()));
     }
 }

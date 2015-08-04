@@ -49,7 +49,7 @@ public class PostController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @Transactional
-    public String edit(@PathVariable("id") Integer postId, @RequestParam Map<String,String> postData) throws IllegalArgumentException {
+    public String edit(@PathVariable("id") Integer postId, @RequestParam Map<String, String> postData) throws IllegalArgumentException {
         Post post = posts.getPost(postId);
         if (post == null) {
             throw new IllegalArgumentException("Post #" + postId + " not found.");
@@ -60,14 +60,9 @@ public class PostController {
         return "redirect:/post";
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
-    @Transactional
-    public String delete(Post post) throws IllegalArgumentException  {
-        Post postObject = posts.getPost(post.getId());
-        if (postObject == null) {
-            throw new IllegalArgumentException("Post #" + post.getId() + " not found.");
-        }
-        posts.remove(postObject);
+    @RequestMapping(value = "**", method = RequestMethod.DELETE)
+    public String delete(Post post) {
+        posts.remove(post);
         return "redirect:/post";
     }
 }

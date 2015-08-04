@@ -15,15 +15,24 @@ public class PostsImpl implements Posts {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void addPost(Post post) {
+    public void add(Post post) {
         entityManager.persist(post);
     }
 
+    public void edit(Post post) {
+        entityManager.merge(post);
+    }
+
     public List<Post> getAll() {
-        return entityManager.createQuery("SELECT p FROM Post p", Post.class).getResultList();
+        return entityManager.createQuery("SELECT p FROM Post p ORDER BY p.created", Post.class)
+                .getResultList();
     }
 
     public Post getPost(Integer postId){
         return entityManager.find(Post.class, postId);
+    }
+
+    public void remove(Post post) {
+        entityManager.remove(post);
     }
 }

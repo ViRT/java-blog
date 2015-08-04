@@ -1,9 +1,6 @@
 package com.home.testspring.beans;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -11,6 +8,7 @@ public class User {
     @Id
     @GeneratedValue
     private Integer id;
+    @Column(unique=true)
     private String name;
     private String password;
     private Timestamp created;

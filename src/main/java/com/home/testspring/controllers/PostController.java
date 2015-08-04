@@ -44,7 +44,7 @@ public class PostController {
     public String newPost(Post post) {
         post.setAuthor(users.getUserByName("admin"));
         posts.add(post);
-        return "redirect:post";
+        return "redirect:/post";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -57,7 +57,7 @@ public class PostController {
         postData.remove("_method");
         BeanWrapperImpl postBeanWrapper = new BeanWrapperImpl(post);
         postBeanWrapper.setPropertyValues(postData);
-        return "redirect:";
+        return "redirect:/post";
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
@@ -68,6 +68,6 @@ public class PostController {
             throw new IllegalArgumentException("Post #" + post.getId() + " not found.");
         }
         posts.remove(postObject);
-        return "redirect:post";
+        return "redirect:/post";
     }
 }

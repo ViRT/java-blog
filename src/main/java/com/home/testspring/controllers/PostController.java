@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.Map;
 
 @Controller
@@ -40,8 +41,8 @@ public class PostController {
 
     @RequestMapping(method = RequestMethod.POST)
     @Secured("ROLE_USER")
-    public String newPost(Post post) {
-        post.setAuthor(users.getUserByName("admin"));
+    public String newPost(Post post, Principal principal) {
+        post.setAuthor(users.getUserByName(principal.getName()));
         posts.add(post);
         return "redirect:/post";
     }

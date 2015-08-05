@@ -29,10 +29,13 @@
 
     <security:authentication-manager>
         <security:authentication-provider >
+            <security:password-encoder ref="encoder" />
             <security:jdbc-user-service
                     data-source-ref="dataSource"
                     users-by-username-query="select username,password,enabled from User where username=?"
                     authorities-by-username-query="select u.username,r.role from User u, Role r where u.id = r.user_id and u.username =?" />
         </security:authentication-provider>
     </security:authentication-manager>
+
+    <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </beans>

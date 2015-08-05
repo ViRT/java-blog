@@ -1,5 +1,5 @@
-INSERT INTO User (username,password,enabled) VALUES ('admin','admin',true);
-INSERT INTO User (username,password,enabled) VALUES ('test','test',true);
+INSERT INTO User (username,password,enabled) VALUES ('admin','$2a$04$ijI7QiRSyWqFhC76fc4mU.4bmSkNBS2WmlfIdLwlVqUnGWlBBy7Qe',true);
+INSERT INTO User (username,password,enabled) VALUES ('test','$2a$04$Qx96pzwHRZnNIo7U5qwvYuTCc5UlMt1io8YtfbuCHfcNn5/oo1U4m',true);
 
 INSERT INTO Role (user_id,role) VALUES (1,'ROLE_ADMIN');
 INSERT INTO Role (user_id,role) VALUES (1,'ROLE_USER');

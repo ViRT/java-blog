@@ -2,6 +2,7 @@
 <%@taglib tagdir="/WEB-INF/tags/bootstrap" prefix="bt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 
 <bt:page>
     <jsp:body>
@@ -9,7 +10,7 @@
             <c:forEach var="post" items="${posts}">
             <div class="row">
                 <div class="col-xs-2">
-                    <h2>${post.author.name}</h2>
+                    <h2>${post.author.username}</h2>
                 </div>
                 <div class="col-xs-2">
                     <h3><fmt:formatDate type="both" value="${post.created}"/></h3>
@@ -19,31 +20,37 @@
                 </div>
                 <div class="col-xs-2">
                     <form role="form" class="form-horizontal" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="_method" value="DELETE"/>
                         <input type="hidden" name="id" value="${post.id}"/>
                         <div class="col-sm-offset-2">
-                            <button type="submit" class="btn btn-default">Delete</button>
+                            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                <button type="submit" class="btn btn-default">Delete</button>
+                             </sec:authorize>
                             <a href="/post/${post.id}" class="btn">Show</a>
                         </div>
                     </form>
                 </div>
             </div>
             </c:forEach>
-            <div class="row">
-                <form role="form" class="form-horizontal" method="post">
-                    <div class="col-xs-4"></div>
-                    <div class="col-xs-6">
-                        <div class="form-group">
-                            <textarea class="form-control" rows="5" name="body"></textarea>
+            <sec:authorize access="hasRole('ROLE_USER')">
+                <div class="row">
+                    <form role="form" class="form-horizontal" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <div class="col-xs-4"></div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <textarea class="form-control" rows="5" name="body"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-xs-2">
-                        <div class="col-sm-offset-2">
-                            <button type="submit" class="btn btn-default">Add post</button>
+                        <div class="col-xs-2">
+                            <div class="col-sm-offset-2">
+                                <button type="submit" class="btn btn-default">Add post</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </div>
+                    </form>
+                </div>
+            </sec:authorize>
         </div>
     </jsp:body>
 </bt:page>

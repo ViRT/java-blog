@@ -5,8 +5,8 @@ import com.home.testspring.repositories.Posts;
 import com.home.testspring.repositories.Users;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +40,7 @@ public class PostController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    @Transactional
+    @Secured("ROLE_USER")
     public String newPost(Post post) {
         post.setAuthor(users.getUserByName("admin"));
         posts.add(post);
@@ -48,19 +48,22 @@ public class PostController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @Transactional
+    @Secured("ROLE_USER")
     public String edit(@PathVariable("id") Integer postId, @RequestParam Map<String, String> postData) throws IllegalArgumentException {
         Post post = posts.getPost(postId);
         if (post == null) {
             throw new IllegalArgumentException("Post #" + postId + " not found.");
         }
         postData.remove("_method");
+        postData.remove("_csrf");
         BeanWrapperImpl postBeanWrapper = new BeanWrapperImpl(post);
         postBeanWrapper.setPropertyValues(postData);
+        posts.edit(post);
         return "redirect:/post";
     }
 
     @RequestMapping(value = "**", method = RequestMethod.DELETE)
+    @Secured("ROLE_ADMIN")
     public String delete(Post post) {
         posts.remove(post);
         return "redirect:/post";

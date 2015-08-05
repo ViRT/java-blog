@@ -16,24 +16,29 @@ public class UsersImpl implements Users {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Override
     public void addUser(User user) {
         entityManager.persist(user);
     }
 
+    @Override
     public void editUser(User user) {
         entityManager.merge(user);
     }
 
+    @Override
     public List<User> getAll() {
         return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 
+    @Override
     public User getUserById(Integer userId) {
         return entityManager.find(User.class, userId);
     }
 
+    @Override
     public User getUserByName(String userName) {
-        return entityManager.createQuery("SELECT u FROM User u WHERE name=:username", User.class)
+        return entityManager.createQuery("SELECT u FROM User u WHERE username=:username", User.class)
                 .setParameter("username", userName)
                 .setMaxResults(1)
                 .getSingleResult();

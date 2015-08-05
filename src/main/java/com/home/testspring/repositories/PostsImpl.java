@@ -1,6 +1,7 @@
 package com.home.testspring.repositories;
 
 import com.home.testspring.beans.Post;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Transactional(propagation = Propagation.REQUIRED)
@@ -21,7 +23,13 @@ public class PostsImpl implements Posts {
     }
 
     @Override
-    public void edit(Post post) {
+    public void edit(Integer postId, Map<String,String> postData) throws IllegalArgumentException {
+        Post post = getPost(postId);
+        if (post == null) {
+            throw new IllegalArgumentException("Post #" + postId + " not found.");
+        }
+        BeanWrapperImpl postBeanWrapper = new BeanWrapperImpl(post);
+        postBeanWrapper.setPropertyValues(postData);
         entityManager.merge(post);
     }
 

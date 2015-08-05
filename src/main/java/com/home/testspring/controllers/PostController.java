@@ -3,7 +3,6 @@ package com.home.testspring.controllers;
 import com.home.testspring.beans.Post;
 import com.home.testspring.repositories.Posts;
 import com.home.testspring.repositories.Users;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -49,16 +48,10 @@ public class PostController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @Secured("ROLE_USER")
-    public String edit(@PathVariable("id") Integer postId, @RequestParam Map<String, String> postData) throws IllegalArgumentException {
-        Post post = posts.getPost(postId);
-        if (post == null) {
-            throw new IllegalArgumentException("Post #" + postId + " not found.");
-        }
+    public String edit(@PathVariable("id") Integer postId, @RequestParam Map<String, String> postData) {
         postData.remove("_method");
         postData.remove("_csrf");
-        BeanWrapperImpl postBeanWrapper = new BeanWrapperImpl(post);
-        postBeanWrapper.setPropertyValues(postData);
-        posts.edit(post);
+        posts.edit(postId, postData);
         return "redirect:/post";
     }
 

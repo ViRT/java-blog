@@ -20,10 +20,10 @@
         <!-- Override default login and logout pages -->
         <security:form-login login-page="/login"
                              login-processing-url="/loginProcess"
-                             default-target-url="/post"
-                             authentication-failure-url="/post" />
+                             default-target-url="/"
+                             authentication-failure-url="/login" />
         <security:logout logout-url="/logout"
-                         logout-success-url="/post" />
+                         logout-success-url="/logout" />
     </security:http>
 
     <security:authentication-manager>

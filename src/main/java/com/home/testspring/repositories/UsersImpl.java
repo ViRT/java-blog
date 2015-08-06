@@ -14,31 +14,32 @@ import java.util.List;
 @Transactional(propagation = Propagation.REQUIRED)
 public class UsersImpl implements Users {
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager em;
 
     @Override
     public void create(User user) {
-        entityManager.persist(user);
+        em.persist(user);
     }
 
     @Override
     public void update(User user) {
-        entityManager.merge(user);
+        em.merge(user);
     }
 
     @Override
     public List<User> getAll() {
-        return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
+        return em.createQuery("SELECT u FROM User u", User.class)
+                .getResultList();
     }
 
     @Override
     public User getUserById(Integer userId) {
-        return entityManager.find(User.class, userId);
+        return em.find(User.class, userId);
     }
 
     @Override
     public User getUserByName(String userName) {
-        return entityManager.createQuery("SELECT u FROM User u WHERE username=:username", User.class)
+        return em.createQuery("SELECT u FROM User u WHERE username=:username", User.class)
                 .setParameter("username", userName)
                 .setMaxResults(1)
                 .getSingleResult();

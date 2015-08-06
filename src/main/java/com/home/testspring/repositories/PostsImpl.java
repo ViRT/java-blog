@@ -15,11 +15,11 @@ import java.util.Map;
 @Transactional(propagation = Propagation.REQUIRED)
 public class PostsImpl implements Posts {
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager em;
 
     @Override
     public void create(Post post) {
-        entityManager.persist(post);
+        em.persist(post);
     }
 
     @Override
@@ -30,22 +30,22 @@ public class PostsImpl implements Posts {
         }
         BeanWrapperImpl postBeanWrapper = new BeanWrapperImpl(post);
         postBeanWrapper.setPropertyValues(postData);
-        entityManager.merge(post);
+        em.merge(post);
     }
 
     @Override
     public List<Post> getAll() {
-        return entityManager.createQuery("SELECT p FROM Post p ORDER BY p.created", Post.class)
+        return em.createQuery("SELECT p FROM Post p ORDER BY p.created", Post.class)
                 .getResultList();
     }
 
     @Override
     public Post get(Integer postId){
-        return entityManager.find(Post.class, postId);
+        return em.find(Post.class, postId);
     }
 
     @Override
     public void remove(Post post) {
-        entityManager.remove(entityManager.getReference(Post.class, post.getId()));
+        em.remove(em.getReference(Post.class, post.getId()));
     }
 }

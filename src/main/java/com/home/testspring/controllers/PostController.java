@@ -35,10 +35,10 @@ public class PostController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String getPost(@PathVariable("id") Integer postId, Model model) throws IllegalArgumentException {
-        Post post = posts.get(postId);
+    public String getPost(@PathVariable("id") Integer id, Model model) throws IllegalArgumentException {
+        Post post = posts.get(id);
         if (post == null) {
-            throw new IllegalArgumentException("Post #" + postId + " not found.");
+            throw new IllegalArgumentException("Post #" + id + " not found.");
         }
         model.addAttribute("post", post);
         LOGGER.info("Post: get post: " + post);
@@ -56,19 +56,19 @@ public class PostController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @Secured("ROLE_USER")
-    public String update(@PathVariable("id") Integer postId, @RequestParam Map<String, String> postData) {
-        postData.remove("_method");
-        postData.remove("_csrf");
-        posts.update(postId, postData);
-        LOGGER.info("Post: update post #" + postId + " data: " + postData);
+    public String update(@PathVariable("id") Integer id, @RequestParam Map<String, String> data) {
+        data.remove("_method");
+        data.remove("_csrf");
+        posts.update(id, data);
+        LOGGER.info("Post: update post #" + id + " data: " + data);
         return "redirect:/post";
     }
 
     @RequestMapping(value = "**", method = RequestMethod.DELETE)
     @Secured("ROLE_ADMIN")
-    public String delete(Post post) {
-        LOGGER.info("Post: delete post #" + post.getId());
-        posts.remove(post);
+    public String delete(@RequestParam("id") Integer id) {
+        LOGGER.info("Post: delete post #" + id);
+        posts.remove(id);
         return "redirect:/post";
     }
 }

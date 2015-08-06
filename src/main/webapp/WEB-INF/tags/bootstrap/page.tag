@@ -1,4 +1,5 @@
 <%@tag description="Overall Page template" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <%@attribute name="title" fragment="true" %>
 <%@attribute name="header" fragment="true" %>
@@ -56,6 +57,11 @@
             </div>
           </div>
         </nav>
+        <c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
+            <div class="alert alert-danger">
+                <strong>Your login attempt was not successful, try again. Caused:</strong> ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+            </div>
+        </c:if>
         <jsp:doBody/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <jsp:invoke fragment="footer"/>

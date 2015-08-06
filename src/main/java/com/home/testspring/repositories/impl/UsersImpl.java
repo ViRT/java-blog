@@ -13,10 +13,6 @@ public class UsersImpl extends AbstractRepositoryImpl<User> implements Users {
         return User.class;
     }
 
-    public User getUserById(Integer userId) {
-        return em.find(User.class, userId);
-    }
-
     public User getUserByName(String userName) {
         return em.createQuery("SELECT u FROM User u WHERE username=:username", User.class)
                 .setParameter("username", userName)

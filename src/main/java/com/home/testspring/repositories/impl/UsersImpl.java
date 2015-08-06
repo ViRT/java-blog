@@ -6,15 +6,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 @Repository
-@Transactional(propagation = Propagation.REQUIRED)
 public class UsersImpl extends AbstractRepositoryImpl<User> implements Users {
-    @PersistenceContext
-    private EntityManager em;
-
     @Override
     protected Class getEntityClass() {
         return User.class;

@@ -18,13 +18,13 @@ public class PostsImpl implements Posts {
     private EntityManager entityManager;
 
     @Override
-    public void add(Post post) {
+    public void create(Post post) {
         entityManager.persist(post);
     }
 
     @Override
-    public void edit(Integer postId, Map<String,String> postData) throws IllegalArgumentException {
-        Post post = getPost(postId);
+    public void update(Integer postId, Map<String,String> postData) throws IllegalArgumentException {
+        Post post = get(postId);
         if (post == null) {
             throw new IllegalArgumentException("Post #" + postId + " not found.");
         }
@@ -40,7 +40,7 @@ public class PostsImpl implements Posts {
     }
 
     @Override
-    public Post getPost(Integer postId){
+    public Post get(Integer postId){
         return entityManager.find(Post.class, postId);
     }
 

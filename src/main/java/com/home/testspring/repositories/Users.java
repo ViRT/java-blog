@@ -5,8 +5,8 @@ import com.home.testspring.beans.User;
 import java.util.List;
 
 public interface Users {
-    void addUser(User user);
-    void editUser(User user);
+    void create(User user);
+    void update(User user);
 
     List<User> getAll();
 

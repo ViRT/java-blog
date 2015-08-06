@@ -17,12 +17,12 @@ public class UsersImpl implements Users {
     private EntityManager entityManager;
 
     @Override
-    public void addUser(User user) {
+    public void create(User user) {
         entityManager.persist(user);
     }
 
     @Override
-    public void editUser(User user) {
+    public void update(User user) {
         entityManager.merge(user);
     }
 

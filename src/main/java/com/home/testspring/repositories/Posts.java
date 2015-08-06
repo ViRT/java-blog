@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 public interface Posts {
-    void add(Post post);
-    void edit(Integer postId, Map<String,String> postData) throws IllegalArgumentException;
+    void create(Post post);
+    void update(Integer postId, Map<String,String> postData) throws IllegalArgumentException;
 
     List<Post> getAll();
 
-    Post getPost(Integer postId);
+    Post get(Integer postId);
 
     void remove(Post post);
 }

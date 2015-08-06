@@ -31,7 +31,7 @@ public class PostController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String getPost(@PathVariable("id") Integer postId, Model model) throws IllegalArgumentException {
-        Post post = posts.getPost(postId);
+        Post post = posts.get(postId);
         if (post == null) {
             throw new IllegalArgumentException("Post #" + postId + " not found.");
         }
@@ -41,18 +41,18 @@ public class PostController {
 
     @RequestMapping(method = RequestMethod.POST)
     @Secured("ROLE_USER")
-    public String newPost(Post post, Principal principal) {
+    public String create(Post post, Principal principal) {
         post.setAuthor(users.getUserByName(principal.getName()));
-        posts.add(post);
+        posts.create(post);
         return "redirect:/post";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @Secured("ROLE_USER")
-    public String edit(@PathVariable("id") Integer postId, @RequestParam Map<String, String> postData) {
+    public String update(@PathVariable("id") Integer postId, @RequestParam Map<String, String> postData) {
         postData.remove("_method");
         postData.remove("_csrf");
-        posts.edit(postId, postData);
+        posts.update(postId, postData);
         return "redirect:/post";
     }
 

@@ -3,6 +3,8 @@ package com.home.testspring.controllers;
 import com.home.testspring.beans.Post;
 import com.home.testspring.repositories.Posts;
 import com.home.testspring.repositories.Users;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -23,9 +25,12 @@ public class PostController {
     @Autowired
     private Users users;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PostController.class);
+
     @RequestMapping(method = RequestMethod.GET)
     public String getPosts(Model model) {
         model.addAttribute("posts", posts.getAll());
+        LOGGER.info("Post: Get list");
         return "post/list";
     }
 
@@ -36,6 +41,7 @@ public class PostController {
             throw new IllegalArgumentException("Post #" + postId + " not found.");
         }
         model.addAttribute("post", post);
+        LOGGER.info("Post: get post: " + post);
         return "post/post";
     }
 
@@ -44,6 +50,7 @@ public class PostController {
     public String create(Post post, Principal principal) {
         post.setAuthor(users.getUserByName(principal.getName()));
         posts.create(post);
+        LOGGER.info("Post: create post: " + post);
         return "redirect:/post";
     }
 
@@ -53,12 +60,14 @@ public class PostController {
         postData.remove("_method");
         postData.remove("_csrf");
         posts.update(postId, postData);
+        LOGGER.info("Post: update post #" + postId + " data: " + postData);
         return "redirect:/post";
     }
 
     @RequestMapping(value = "**", method = RequestMethod.DELETE)
     @Secured("ROLE_ADMIN")
     public String delete(Post post) {
+        LOGGER.info("Post: delete post #" + post.getId());
         posts.remove(post);
         return "redirect:/post";
     }

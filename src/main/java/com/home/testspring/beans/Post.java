@@ -64,9 +64,13 @@ public class Post {
         this.active = active;
     }
 
+    public String toString() {
+        return "Post: id[" + getId() + "] body[" + getBody() + "] author[" + getAuthor().getUsername() + "] created[" + getCreated() + "]";
+    }
+
     @PrePersist
     protected void onCreate() {
-        created  = new Timestamp(System.currentTimeMillis());
+        created = new Timestamp(System.currentTimeMillis());
         modified = new Timestamp(System.currentTimeMillis());
     }
 

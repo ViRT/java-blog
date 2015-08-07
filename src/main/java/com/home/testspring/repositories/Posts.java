@@ -5,5 +5,5 @@ import com.home.testspring.beans.Post;
 import java.util.Map;
 
 public interface Posts extends AbstractRepository<Post> {
-    void update(Integer id, Map<String, String> data) throws IllegalArgumentException;
+    void update(Post post) throws IllegalArgumentException;
 }

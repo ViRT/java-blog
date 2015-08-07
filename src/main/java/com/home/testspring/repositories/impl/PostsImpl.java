@@ -16,13 +16,7 @@ public class PostsImpl extends AbstractRepositoryImpl<Post> implements Posts {
     }
 
     @Transactional
-    public void update(Integer id, Map<String,String> data) throws IllegalArgumentException {
-        Post post = get(id);
-        if (post == null) {
-            throw new IllegalArgumentException("Post #" + id + " not found.");
-        }
-        BeanWrapperImpl postBeanWrapper = new BeanWrapperImpl(post);
-        postBeanWrapper.setPropertyValues(data);
+    public void update(Post post) throws IllegalArgumentException {
         em.merge(post);
     }
 }

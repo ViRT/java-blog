@@ -1,5 +1,7 @@
 package com.home.testspring.beans;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -9,6 +11,7 @@ public class Post {
     @GeneratedValue
     private Integer id;
     @Column(columnDefinition = "text")
+    @NotEmpty(message = "Please enter message body.")
     private String body;
     @ManyToOne
     private User author;

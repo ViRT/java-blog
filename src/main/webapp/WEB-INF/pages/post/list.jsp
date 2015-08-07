@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <bt:page>
     <jsp:body>
@@ -35,12 +36,14 @@
             </c:forEach>
             <sec:authorize access="hasRole('ROLE_USER')">
                 <div class="row">
-                    <form role="form" class="form-horizontal" method="post">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <form:form role="form" class="form-horizontal" method="post" modelAttribute="post">
                         <div class="col-xs-4"></div>
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <textarea class="form-control" rows="5" name="body"></textarea>
+                                <form:textarea path="body" class="form-control" rows="5"/>
+                            </div>
+                            <div class="form-group">
+                                <form:errors path="body" cssClass="error"/>
                             </div>
                         </div>
                         <div class="col-xs-2">
@@ -48,7 +51,7 @@
                                 <button type="submit" class="btn btn-default">Add post</button>
                             </div>
                         </div>
-                    </form>
+                    </form:form>
                 </div>
             </sec:authorize>
         </div>

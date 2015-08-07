@@ -2,12 +2,12 @@
 <%@taglib tagdir="/WEB-INF/tags/bootstrap" prefix="bt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 
 <bt:page>
     <jsp:body>
-    <form role="form" class="form-horizontal" method="post">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <form:form role="form" class="form-horizontal" method="post" modelAttribute="post">
         <div class="container">
             <div class="row">
                 <div class="col-xs-2">
@@ -17,14 +17,19 @@
                     <h3><fmt:formatDate type="both" value="${post.created}"/></h3>
                 </div>
                 <div class="col-xs-6">
-                    <div class="form-group">
                     <sec:authorize access="hasRole('ROLE_USER')">
-                        <textarea class="form-control" rows="5" name="body">${post.body}</textarea>
+                        <div class="form-group">
+                            <form:textarea path="body" class="form-control" rows="5"/>
+                        </div>
+                        <div class="form-group">
+                            <form:errors path="body" cssClass="error"/>
+                        </div>
                     </sec:authorize>
                     <sec:authorize access="isAnonymous()">
-                        <h4>${post.body}</h4>
+                        <div class="form-group">
+                            <h4>${post.body}</h4>
+                        </div>
                     </sec:authorize>
-                    </div>
                 </div>
                 <div class="col-xs-2">
                     <sec:authorize access="hasRole('ROLE_USER')">
@@ -34,8 +39,7 @@
                     </sec:authorize>
                 </div>
             </div>
-            <input type="hidden" name="_method" value="PUT"/>
         </div>
-    </form>
+    </form:form>
     </jsp:body>
 </bt:page>

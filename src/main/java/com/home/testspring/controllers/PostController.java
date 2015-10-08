@@ -25,7 +25,7 @@ public class PostController {
     @Autowired
     private Users users;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PostController.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(PostController.class);
 
     @RequestMapping(method = RequestMethod.GET)
     public String getPosts(Model model, Post post) {

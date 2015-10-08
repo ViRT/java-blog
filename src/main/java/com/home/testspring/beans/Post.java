@@ -67,6 +67,7 @@ public class Post {
         this.active = active;
     }
 
+    @Override
     public String toString() {
         return "Post: id[" + getId() + "] body[" + getBody() + "] author[" + getAuthor().getUsername() + "] created[" + getCreated() + "]";
     }

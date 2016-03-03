@@ -13,7 +13,7 @@
    http://www.springframework.org/schema/security
    http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-    <mvc:annotation-driven />
+    <mvc:annotation-driven conversion-service="conversionService"/>
     <mvc:resources mapping="/css/**" location="/css/"/>
     <mvc:resources mapping="/favicon.ico" location="/images/favicon.ico"/>
 
@@ -24,5 +24,14 @@
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/pages/" />
         <property name="suffix" value=".jsp" />
+    </bean>
+
+    <bean id="conversionService"
+          class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="com.home.testspring.converters.PostConverter"/>
+            </list>
+        </property>
     </bean>
 </beans>

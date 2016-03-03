@@ -5,7 +5,6 @@ import com.home.testspring.repositories.Posts;
 import com.home.testspring.repositories.Users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -33,8 +32,8 @@ public class PostController {
         return "post/list";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String getPost(@PathVariable("id") Integer id, Model model) throws IllegalArgumentException {
+    @RequestMapping(value = "/{post}", method = RequestMethod.GET)
+    public String getPost(@PathVariable("post") Integer id, Model model) throws IllegalArgumentException {
         Post post = posts.get(id);
         if (post == null) {
             throw new IllegalArgumentException("Post #" + id + " not found.");
@@ -58,10 +57,9 @@ public class PostController {
         return "redirect:/post";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{post}", method = RequestMethod.POST)
     @Secured("ROLE_USER")
     public String update(@Valid Post post, BindingResult result) {
-        BeanUtils.copyProperties(posts.get(post.getId()), post, "body");
         LOGGER.info("Post: update: validate post: " + result);
         if (result.hasErrors()) {
             return "post/post";

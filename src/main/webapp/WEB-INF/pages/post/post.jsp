@@ -22,7 +22,9 @@
                             <form:textarea path="body" class="form-control" rows="5"/>
                         </div>
                         <div class="form-group">
-                            <form:errors path="body" cssClass="error"/>
+                            <c:if test="${not empty message}">
+                                ${message}
+                            </c:if>
                         </div>
                     </sec:authorize>
                     <sec:authorize access="isAnonymous()">

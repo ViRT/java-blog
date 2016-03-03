@@ -69,7 +69,7 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post: id[" + getId() + "] body[" + getBody() + "] author[" + getAuthor().getUsername() + "] created[" + getCreated() + "]";
+        return "Post: id[" + getId() + "] body[" + getBody() + "] author[" + (getAuthor() == null ? "" : getAuthor().getUsername()) + "] created[" + getCreated() + "]";
     }
 
     @PrePersist

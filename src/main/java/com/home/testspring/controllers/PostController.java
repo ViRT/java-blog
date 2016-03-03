@@ -6,12 +6,16 @@ import com.home.testspring.repositories.Users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.FlashMap;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -26,7 +30,7 @@ public class PostController {
     private final Logger LOGGER = LoggerFactory.getLogger(PostController.class);
 
     @RequestMapping(method = RequestMethod.GET)
-    public String getPosts(Model model, Post post) {
+    public String getPosts(Model model) {
         model.addAttribute("posts", posts.getAll());
         LOGGER.info("Post: Get list");
         return "post/list";
@@ -45,28 +49,18 @@ public class PostController {
 
     @RequestMapping(method = RequestMethod.POST)
     @Secured("ROLE_USER")
-    public String create(@Valid Post post, BindingResult result, Principal principal, Model model) {
-        LOGGER.info("Post: create: validate post: " + result);
-        if (result.hasErrors()) {
-            return getPosts(model, post);
-        } else {
-            post.setAuthor(users.getUserByName(principal.getName()));
-            posts.create(post);
-            LOGGER.info("Post: create post: " + post);
-        }
+    public String create(@Valid Post post, Principal principal) {
+        post.setAuthor(users.getUserByName(principal.getName()));
+        posts.create(post);
+        LOGGER.info("Post: create post: " + post);
         return "redirect:/post";
     }
 
     @RequestMapping(value = "/{post}", method = RequestMethod.POST)
     @Secured("ROLE_USER")
-    public String update(@Valid Post post, BindingResult result) {
-        LOGGER.info("Post: update: validate post: " + result);
-        if (result.hasErrors()) {
-            return "post/post";
-        } else {
-            posts.update(post);
-            LOGGER.info("Post: update post #" + post.getId() + " post: " + post);
-        }
+    public String update(@Valid Post post) {
+        posts.update(post);
+        LOGGER.info("Post: update post #" + post.getId() + " post: " + post);
         return "redirect:/post";
     }
 
@@ -76,5 +70,15 @@ public class PostController {
         LOGGER.info("Post: delete post #" + id);
         posts.remove(id);
         return "redirect:/post";
+    }
+
+    @ExceptionHandler(BindException.class)
+    public String validationExceptionHandler(BindException e, final HttpServletRequest request) {
+        LOGGER.error("Error validation: " + e.getMessage());
+        FlashMap outputFlashMap = RequestContextUtils.getOutputFlashMap(request);
+        if (outputFlashMap != null){
+            outputFlashMap.put("message", e.getFieldError().getDefaultMessage());
+        }
+        return "redirect:" + request.getHeader(HttpHeaders.REFERER);
     }
 }

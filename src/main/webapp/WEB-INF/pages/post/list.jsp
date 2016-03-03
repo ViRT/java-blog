@@ -36,14 +36,17 @@
             </c:forEach>
             <sec:authorize access="hasRole('ROLE_USER')">
                 <div class="row">
-                    <form:form role="form" class="form-horizontal" method="post" modelAttribute="post">
+                     <form role="form" class="form-horizontal" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="col-xs-4"></div>
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <form:textarea path="body" class="form-control" rows="5"/>
+                                 <textarea class="form-control" rows="5" name="body"></textarea>
                             </div>
                             <div class="form-group">
-                                <form:errors path="body" cssClass="error"/>
+                                <c:if test="${not empty message}">
+                                    ${message}
+                                </c:if>
                             </div>
                         </div>
                         <div class="col-xs-2">
@@ -51,7 +54,7 @@
                                 <button type="submit" class="btn btn-default">Add post</button>
                             </div>
                         </div>
-                    </form:form>
+                    </form>
                 </div>
             </sec:authorize>
         </div>
